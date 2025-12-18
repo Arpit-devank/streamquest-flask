@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic OTT</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="/">Home</a>
+    <a href="/login">Login</a>
+    <a href="/signup">Signup</a>
+    <a href="/admin">Admin</a>
+</nav>
+
+<hr>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

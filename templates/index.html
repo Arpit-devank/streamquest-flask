@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Available Content</h2>
+<a href="/admin">
+    <button>Add New Content</button>
+</a>
+
+<div class="card-container">
+    {% for item in contents %}
+<div class="content-card">
+    <h3>{{ item.title }}</h3>
+    <p>{{ item.genre }}</p>
+    <a href="/details/{{ item.id }}">View Details</a>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}

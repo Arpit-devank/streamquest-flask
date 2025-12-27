@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify, redirect
-from extensions import db
 from models import Content
 
 from flask_jwt_extended import jwt_required
 from auth.decorators import admin_required
+from extensions import db
 
 
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -20,7 +20,7 @@ def add_content():
     )
     db.session.add(content)
     db.session.commit()
-    return redirect("/")
+    return  jsonify({"message": "Content added"}), 201
 
 @admin_bp.route("/content/<int:id>", methods=["DELETE"])
 @jwt_required()

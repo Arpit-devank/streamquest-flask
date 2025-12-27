@@ -3,17 +3,34 @@
 {% block content %}
 <h2>Admin Dashboard</h2>
 
-<form method="POST" action="/admin/content" enctype="multipart/form-data">
-    <input type="text" name="title" placeholder="Title"><br><br>
-    <textarea name="description" placeholder="Description"></textarea><br><br>
-    <input type="text" name="genre" placeholder="Genre"><br><br>
-    <button type="submit">Add Content</button>
+<form>
+    <input type="text" id="title" name="title" placeholder="Title"><br><br>
+    <textarea name="description" id="description" placeholder="Description"></textarea><br><br>
+    <input type="text" id="genre" name="genre" placeholder="Genre"><br><br>
+    <button type="button" onclick="addContent()">Add Content</button>
 </form>
-<ul id="content-list"></ul>
+<hr>
+<div class="card-container">
+    {% for item in contents %}
+    <div class="content-card">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.genre }}</p>
+        <div style="display: flex; gap: 10px;">
+            <button class="delete-btn" onclick="deleteContent({{ item.id }})">Delete</button>
+            <a class="details-btn" href="/details/{{ item.id }}">View Details</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 <script>
-    const token = localStorage.getItem("access_token");
-
+    
     function addContent() {
+        const token = localStorage.getItem("access_token");
+        if (!token) {
+            alert("You must be logged in as admin to add content.");
+            window.location.href = "/login";
+            return;
+        }
         fetch("/admin/content", {
             method: "POST",
             headers: {
@@ -22,12 +39,17 @@
             },
             body: JSON.stringify({
                 title: document.getElementById("title").value,
-                description: document.getElementById("description").value
+                description: document.getElementById("description").value,
+                genre: document.getElementById("genre").value
             })
-        }).then(() => location.reload());
+        }).then(res => {
+            if (!res.ok) return res.json().then(j => { alert(j.message || 'Error'); });
+            location.reload();
+        }).catch(() => alert('Network error'));
     }
 
     function deleteContent(id) {
+        const token = localStorage.getItem("access_token");
         fetch(`/admin/content/${id}`, {
             method: "DELETE",
             headers: {

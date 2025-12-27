@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Details</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<h2>{{ item.title }}</h2>
-<p>{{ item.description }}</p>
-<p>Genre: {{ item.genre }}</p>
+{% block content %}
+<div class="card-container">
+    <div class="content-card">
+    <h2>{{ item.title }}</h2>
+    <p>{{ item.description }}</p>
+    <p>Genre: {{ item.genre }}</p>
+</div>
+</div>
 <a href="/">Back</a>
-
-
-<a href="index.html">Back to Home</a>
-
-</body>
-</html>
+{% endblock %}

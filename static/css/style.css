@@ -46,3 +46,20 @@ button {
 .navbar a:hover {
     text-decoration: underline;
 }
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.details-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    text-decoration: none;
+    cursor: pointer;
+}

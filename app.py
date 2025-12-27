@@ -2,6 +2,7 @@ from flask import Flask
 from config import Config
 from extensions import db, migrate, jwt
 from flask import render_template
+from models import Content
 
 def create_app():
     app = Flask(__name__)
@@ -9,7 +10,7 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
-    jwt.init_app(app) # enabling JWT
+    jwt.init_app(app) # enabling JWT for secure transactions
 
     from routes.auth import auth_bp
     from routes.content import content_bp
@@ -38,7 +39,8 @@ def signup_page():
 
 @app.route("/admin")
 def admin_page():
-    return render_template("admin.html")
+    contents = Content.query.all()
+    return render_template("admin.html", contents=contents)
 
 
 if __name__ == "__main__":

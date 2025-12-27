@@ -5,12 +5,12 @@
 
 <div class="card-container">
     {% for item in contents %}
-<div class="content-card">
-    <h3>{{ item.title }}</h3>
-    <p>{{ item.genre }}</p>
-    <a href="/details/{{ item.id }}">View Details</a>
-</div>
-{% endfor %}
+    <div class="content-card">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.genre }}</p>
+        <a class="details-btn" href="/details/{{ item.id }}">View Details</a>
+    </div>
+    {% endfor %}
 </div>
 
 {% endblock %}

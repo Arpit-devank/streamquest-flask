@@ -1,6 +1,8 @@
 body {
     font-family: Arial, sans-serif;
     margin: 30px;
+    background: linear-gradient(80deg, #8900f9, #740bc9);
+    color: white;
 }
 
 input, textarea {

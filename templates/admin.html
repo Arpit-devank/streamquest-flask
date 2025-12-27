@@ -9,4 +9,32 @@
     <input type="text" name="genre" placeholder="Genre"><br><br>
     <button type="submit">Add Content</button>
 </form>
+<ul id="content-list"></ul>
+<script>
+    const token = localStorage.getItem("access_token");
+
+    function addContent() {
+        fetch("/admin/content", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                title: document.getElementById("title").value,
+                description: document.getElementById("description").value
+            })
+        }).then(() => location.reload());
+    }
+
+    function deleteContent(id) {
+        fetch(`/admin/content/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }).then(() => location.reload());
+    }
+
+</script>
 {% endblock %}

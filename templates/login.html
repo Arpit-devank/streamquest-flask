@@ -2,9 +2,37 @@
 
 {% block content %}
 <h2>Login</h2>
-<form method="POST" action="/auth/login">
-    <input type="email" name="email" placeholder="Email"><br><br>
-    <input type="password" name="password" placeholder="Password"><br><br>
-    <button type="submit">Login</button>
+<form id="loginForm">
+  <input type="email" id="email" placeholder="Email" required /><br><br>
+  <input type="password" id="password" placeholder="Password" required /><br><br>
+  <button type="submit">Login</button>
 </form>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const res = await fetch("/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("is_admin", data.is_admin);
+
+        window.location.href = "/";
+    } else {
+        alert(data.message);
+    }
+});
+</script>
 {% endblock %}

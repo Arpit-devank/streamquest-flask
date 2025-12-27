@@ -1,21 +1,61 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Basic OTT</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
 
-<nav class="navbar">
-    <a href="/">Home</a>
-    <a href="/login">Login</a>
-    <a href="/signup">Signup</a>
-    <a href="/admin">Admin</a>
-</nav>
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/login" id="login">Login</a>
+        <a href="/signup" id="signup">Signup</a>
+        <a href="#" onclick="navigateToAdmin()">Admin</a>
+    </nav>
 
-<hr>
+    <hr>
 
-{% block content %}{% endblock %}
+    {% block content %}{% endblock %}
+    <script>
+        const token = localStorage.getItem("access_token");
+        const isAdmin = localStorage.getItem("is_admin");
 
+        // for clearing out session or token
+        function logout() {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("is_admin");
+            window.location.href = "/login";
+        }
+
+        function navigateToAdmin() {
+            if (isAdmin !== "true") {
+                alert("Access denied");
+                window.location.href = "/";
+            } else {
+                window.location.href = "/admin";
+            }
+        }
+
+        // for setting up links
+        window.onload = function () {
+            const login = document.querySelector("#login")
+            const signup = document.querySelector("#signup")
+
+            if(token){
+                login.innerHTML = "Logout"
+                login.onclick=function(){
+                    logout()
+                }
+
+                signup.style.display = "none"
+            }else{
+                login.innerHTML = "Login"
+                signup.style.display = "inline"
+            }
+        }
+    </script>
 </body>
+
 </html>

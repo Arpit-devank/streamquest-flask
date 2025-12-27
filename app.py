@@ -1,6 +1,6 @@
 from flask import Flask
 from config import Config
-from extensions import db, migrate
+from extensions import db, migrate, jwt
 from flask import render_template
 
 def create_app():
@@ -9,6 +9,7 @@ def create_app():
 
     db.init_app(app)
     migrate.init_app(app, db)
+    jwt.init_app(app) # enabling JWT
 
     from routes.auth import auth_bp
     from routes.content import content_bp

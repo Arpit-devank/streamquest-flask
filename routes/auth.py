@@ -1,6 +1,10 @@
 from flask import Blueprint, request, jsonify, redirect
 from extensions import db
 from models import User
+from flask import session
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import create_access_token
+
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -10,25 +14,34 @@ def signup():
     user = User(
         name=data["name"],
         email=data["email"],
-        password=data["password"]
+        password=generate_password_hash(data["password"]) # storing a hashed password for securing
     )
     db.session.add(user)
     db.session.commit()
-    # return jsonify({"message": "User created"}), 201
+    return jsonify({"message": "User created"}), 201
 
-    return redirect("/login")
+    # return redirect("/login")
 
-from flask import session
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    email = request.form["email"]
-    password = request.form["password"]
+    data = request.get_json(silent=True) or request.form
 
-    user = User.query.filter_by(email=email, password=password).first()
+    email = data["email"]
+    password = data["password"]
 
-    if user:
-        session["user_id"] = user.id
-        session["is_admin"] = user.is_admin
-        return redirect("/")
-    return redirect("/login")
+    # correct query: filter only by email
+    user = User.query.filter_by(email=email).first()
+
+    if user and check_password_hash(user.password, password):
+        access_token = create_access_token(
+            identity=str(user.id),
+            additional_claims={"is_admin": user.is_admin}
+        )
+
+        return jsonify({
+            "access_token": access_token,
+            "is_admin": user.is_admin
+        }), 200
+
+    return jsonify({"message": "Invalid credentials"}), 401

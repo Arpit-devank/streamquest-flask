@@ -5,7 +5,7 @@ class User(db.Model):
     name = db.Column(db.String(100))
     email = db.Column(db.String(120), unique=True)
     password = db.Column(db.String(200))
-    is_admin = db.Column(db.Boolean, default=False)
+    is_admin = db.Column(db.Boolean, default=False) # used for knowing admin or not
 
 class Content(db.Model):
     id = db.Column(db.Integer, primary_key=True)

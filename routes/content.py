@@ -1,9 +1,11 @@
 from flask import Blueprint, jsonify, render_template
 from models import Content
+from flask_jwt_extended import jwt_required
 
 content_bp = Blueprint("content", __name__)
 
 @content_bp.route("/contents", methods=["GET"])
+@jwt_required()
 def get_contents():
     contents = Content.query.all()
     result = []

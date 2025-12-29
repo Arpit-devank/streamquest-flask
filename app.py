@@ -42,6 +42,6 @@ def admin_page():
     contents = Content.query.all()
     return render_template("admin.html", contents=contents)
 
-
-if __name__ == "__main__":
-    app.run(debug=True)
+# for production, use a WSGI server instead of the built-in Flask server
+# if __name__ == "__main__":
+#     app.run()
